@@ -39,16 +39,15 @@ class Plant:
         else:
             return (1)
 
-    def error_age(self, days: int) -> int:
-        print("Invalid operation attempted: age", days, "days [REJECTED]")
-        print("Security: Negative age rejected")
-        return (1)
-        
-    def error_height(self, height: int) -> int:
-        print("")
-        print("Invalid operation attempted: height ", height, "cm [REJECTED]", sep="")
-        print("Security: Negative height rejected")
-        return (1)
+    def error_msg_age(self, days: int) -> str:
+        msg = f"Invalid operation attempted: age {days} days [REJECTED]\n"
+        msg += "Security: Negative age rejected"
+        return (msg)
+
+    def error_msg_height(self, height: int) -> str:
+        msg = f"Invalid operation attempted: height {height}cm [REJECTED]\n"
+        msg += "Security: Negative height rejected"
+        return (msg)
 
     def get_info(self):
         print(self.name, ":  ", self.height, sep="", end="")
@@ -77,10 +76,10 @@ def ft_update_plant(plant: Plant, age: int, height: int) -> int:
     else:
         print("[OK]")
     if error_height:
-        plant.error_height(height)
+        print(plant.error_msg_height(height))
     if error_age:
-        plant.error_age(age)
-    print("")    
+        print(plant.error_msg_age(age))
+    print("")
     print("Current plant:", plant.name, end=" ")
     print("(", plant.get_height(), "cm,", sep="", end=" ")
     print(plant.get_age(), "days)")
@@ -90,11 +89,12 @@ def ft_update_plant(plant: Plant, age: int, height: int) -> int:
 def ft_garden_security():
     plants: list[Plant] = []
     nb_plant: int = 0
-    streamline: list[list] = [["Rose", 25, 30],
-                  ["Oak", 200, 365],
-                  ["Cactus", 15, 120],
-                  ["Sunflower", 80, 45],
-                  ["Fern", 15, 120]]
+    streamline: list[list] = [
+        ["Rose", 25, 30],
+        ["Oak", 200, 365],
+        ["Cactus", 15, 120],
+        ["Sunflower", 80, 45],
+        ["Fern", 15, 120]]
     print("=== Plant Factory Output ===")
     for stream in streamline:
         plants.append(ft_creat_plant(stream))
@@ -107,6 +107,7 @@ def ft_garden_security():
     for plant in plants:
         if plant.name == "Rose":
             ft_update_plant(plant, -30, -25)
+
 
 if __name__ == "__main__":
     ft_garden_security()
