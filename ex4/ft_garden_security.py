@@ -5,7 +5,7 @@ from typing import Self
 
 class Plant:
 
-    def __init__(self, name, height, age):
+    def __init__(self, name, height: int = 0, age: int = 0):
         self.name = name
         self.starting_age = age
         self.age = age
@@ -54,7 +54,7 @@ class Plant:
         print(self.age, " days old", sep="")
 
 
-def ft_creat_plant(stream: list[str | int]) -> Plant:
+def ft_creat_plant(stream: list) -> Plant:
     plant = Plant(stream[0], stream[1], stream[2])
     print("Plant created: ", plant.name)
     return (plant)
@@ -64,49 +64,35 @@ def ft_update_plant(plant: Plant, age: int, height: int) -> int:
     error_height: int = 0
     error_age: int = 0
     error_height = plant.set_height(height)
-    print("Height updated: ", plant.get_height(), " cm", sep="", end=" ")
-    if error_height:
-        print("[KO]")
-    else:
-        print("[OK]")
+    print(f"Height updated: {plant.get_height()} cm", end=" ")
+    print("[KO]" if error_height else "[OK]")
     error_age = plant.set_age(age)
-    print("Age updated: ", plant.get_age(), " cm", sep="", end=" ")
-    if error_age:
-        print("[KO]")
-    else:
-        print("[OK]")
+    print(f"Age updated: {plant.get_age()} days", end=" ")
+    print("[KO]" if error_age else "[OK]")
     if error_height:
         print(plant.error_msg_height(height))
     if error_age:
         print(plant.error_msg_age(age))
-    print("")
-    print("Current plant:", plant.name, end=" ")
-    print("(", plant.get_height(), "cm,", sep="", end=" ")
-    print(plant.get_age(), "days)")
+    print(f"\nCurrent plant: {plant.get_name()}", end=" ")
+    print(f"({plant.get_height()}cm, {plant.get_age()} days)")
     return (error_height + error_age)
 
 
 def ft_garden_security():
     plants: list[Plant] = []
     nb_plant: int = 0
-    streamline: list[list] = [
-        ["Rose", 25, 30],
-        ["Oak", 200, 365],
-        ["Cactus", 15, 120],
-        ["Sunflower", 80, 45],
-        ["Fern", 15, 120]]
+    streamline: list[list] = [["Rose", 25, 30]]
     print("=== Plant Factory Output ===")
     for stream in streamline:
         plants.append(ft_creat_plant(stream))
         nb_plant += 1
-
     for plant in plants:
         if plant.name == "Rose":
             ft_update_plant(plant, 30, 25)
-
+    print("\n" * 3)
     for plant in plants:
         if plant.name == "Rose":
-            ft_update_plant(plant, -30, -25)
+            ft_update_plant(plant, 10, -18)
 
 
 if __name__ == "__main__":
