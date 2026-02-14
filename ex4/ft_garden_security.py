@@ -85,7 +85,7 @@ def ft_garden_security():
     for stream in streamline:
         plants.append(ft_creat_plant(stream))
     for plant in plants:
-        if plant.name == "Rose":
+        if plant.get_name() == "Rose":
             ft_update_plant(plant, 30, 25)
 
 
