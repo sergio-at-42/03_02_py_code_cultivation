@@ -80,19 +80,13 @@ def ft_update_plant(plant: Plant, age: int, height: int) -> int:
 
 def ft_garden_security():
     plants: list[Plant] = []
-    nb_plant: int = 0
     streamline: list[list] = [["Rose", 25, 30]]
     print("=== Plant Factory Output ===")
     for stream in streamline:
         plants.append(ft_creat_plant(stream))
-        nb_plant += 1
     for plant in plants:
         if plant.name == "Rose":
             ft_update_plant(plant, 30, 25)
-    print("\n" * 3)
-    for plant in plants:
-        if plant.name == "Rose":
-            ft_update_plant(plant, 10, -18)
 
 
 if __name__ == "__main__":
