@@ -59,7 +59,6 @@ class Flower(Plant):
     def __init__(self, name: str, height: int = 0, age: int = 0,
                  color: str = "rouge"):
         super().__init__(name, height, age)
-        self.type: str = "flower"
         self.color: str = color
 
     def get_color(self) -> str:
@@ -75,10 +74,11 @@ class Flower(Plant):
 
 class Tree(Plant):
 
-    def __init__(self, name, height: int = 0, age: int = 0, trunk: int = 0):
+    def __init__(self, name: str, height: int = 0, age: int = 0,
+                 trunk: int = 0, shade: int = 0):
         super().__init__(name, height, age)
-        self.type: str = "tree"
         self.trunk: int = trunk
+        self.shade: int = shade
 
     def get_trunk(self) -> int:
         return (self.trunk)
@@ -87,16 +87,15 @@ class Tree(Plant):
         self.trunk = trunk
         return (self)
 
-    def produce_shade(self) -> Self:
-        return (self)
+    def produce_shade(self) -> int:
+        return (self.shade)
 
 
 class Vegetable(Plant):
 
-    def __init__(self, name, height: int = 0, age: int = 0,
+    def __init__(self, name: str, height: int = 0, age: int = 0,
                  harvest: str = "summer", nutrition: int = 0):
         super().__init__(name, height, age)
-        self.type: str = "vegetable"
         self.harvest: str = harvest
         self.nutrition: int = nutrition
 
@@ -120,26 +119,42 @@ def ft_creat_plant(stream: list) -> Plant:
         case "flower":
             plant = Flower(stream[1], stream[2], stream[3], stream[4])
         case "tree":
-            plant = Tree(stream[1], stream[2], stream[3], stream[4])
+            plant = Tree(stream[1], stream[2], stream[3],
+                         stream[4], stream[5])
         case "vegetable":
-            plant = Vegetable(stream[1], stream[2], stream[3], stream[4], stream[4])
+            plant = Vegetable(stream[1], stream[2], stream[3],
+                              stream[4], stream[5])
         case _:
             plant = Plant(stream[1], stream[2], stream[3])
     return (plant)
 
+
 def ft_plant_types():
     streamline = [["flower", "Rose", 25, 15, "red"],
                   ["flower", "Tulipe", 30, 12, "yellow"],
-                  ["tree", "Oak", 500, 1825, 50],
-                  ["tree", "Chestnut", 650, 3650, 64],
+                  ["tree", "Oak", 500, 1825, 50, 78],
+                  ["tree", "Chestnut", 650, 3650, 64, 42],
                   ["vegetable", "Tomato", 80, 90, "summer", 15],
                   ["vegetable", "Chili pepper", 64, 42, "fall", 20]]
-    plants = list()
+    plants: list[Plant | Flower | Tree | Vegetable] = []
     for stream in streamline:
         plants.append(ft_creat_plant(stream))
     print("=== Garden Plant Types ===")
-    print(f"")
-
+    print("")
+    for plant in plants:
+        print(f"{plant.name} ({type(plant).__name__}):", end=" ")
+        print(f"{plant.get_height()}cm, {plant.get_age()} days,", end=" ")
+        match type(plant).__name__:
+            case "Flower":
+                print(f"{plant.get_color()} color")
+                print(f"{plant.name} is blooming beautifully!")
+            case "Tree":
+                print(f"{plant.get_trunk()}cm diameter")
+                print(f"{plant.name} provides {plant.produce_shade()} square meters of shade")
+            case "Vegetable":
+                print(f"{plant.get_harvest()} harvest")
+                print(f"{plant.name} contains {plant.get_nutrition()} Kcal per 100g")
+        print("")
 
 if __name__ == "__main__":
     ft_plant_types()
