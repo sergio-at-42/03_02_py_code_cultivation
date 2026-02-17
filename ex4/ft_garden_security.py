@@ -7,10 +7,10 @@ class Plant:
 
     def __init__(self, name, height: int = 0, age: int = 0):
         self.name = name
-        self.starting_age = age
-        self.age = age
-        self.starting_height = height
-        self.height = height
+        self.age: int = 0
+        self.height: int = 0
+        self.set_age(age)
+        self.set_height(height)
 
     def get_name(self) -> str:
         return (self.name)
@@ -86,7 +86,7 @@ def ft_garden_security():
         plants.append(ft_creat_plant(stream))
     for plant in plants:
         if plant.get_name() == "Rose":
-            ft_update_plant(plant, 30, 25)
+            ft_update_plant(plant, 60, 25)
 
 
 if __name__ == "__main__":

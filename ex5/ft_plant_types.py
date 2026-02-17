@@ -141,20 +141,22 @@ def ft_plant_types():
         plants.append(ft_creat_plant(stream))
     print("=== Garden Plant Types ===")
     print("")
-    for plant in plants:
-        print(f"{plant.name} ({type(plant).__name__}):", end=" ")
-        print(f"{plant.get_height()}cm, {plant.get_age()} days,", end=" ")
-        match type(plant).__name__:
+    for p in plants:
+        print(f"{p.name} ({type(p).__name__}):", end=" ")
+        print(f"{p.get_height()}cm, {p.get_age()} days,", end=" ")
+        match type(p).__name__:
             case "Flower":
-                print(f"{plant.get_color()} color")
-                print(f"{plant.name} is blooming beautifully!")
+                print(f"{p.get_color()} color")
+                print(f"{p.name} is blooming beautifully!")
             case "Tree":
-                print(f"{plant.get_trunk()}cm diameter")
-                print(f"{plant.name} provides {plant.produce_shade()} square meters of shade")
+                print(f"{p.get_trunk()}cm diameter")
+                print(f"{p.name} provides {p.produce_shade()}", end=" ")
+                print(" square meters of shade")
             case "Vegetable":
-                print(f"{plant.get_harvest()} harvest")
-                print(f"{plant.name} contains {plant.get_nutrition()} Kcal per 100g")
+                print(f"{p.get_harvest()} harvest")
+                print(f"{p.name} contains {p.get_nutrition()} Kcal per 100g")
         print("")
+
 
 if __name__ == "__main__":
     ft_plant_types()
