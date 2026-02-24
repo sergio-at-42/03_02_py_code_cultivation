@@ -3,56 +3,65 @@
 from typing import Self
 
 
-class GardenManager:
+class Garden:
 
-    def __init__(self, name: str) -> None:
-        self.name: str = ""
-        self.plants: list[Plant | FloweringPlant | PrizeFlower | Tree | Vegetable] = []
-        self.set_name(name)
+    def __init__(self, gardener: str) -> None:
+        self._gardener: str = ""
+        self.plants: list[Plant | FloweringPlant | PrizeFlower | Tree |
+                          Vegetable] = []
+        self.set_gardener(gardener)
 
-    def get_name(self) -> str:
-        return (self.name)
+    def get_gardener(self) -> str:
+        return (self._gardener)
 
-    def set_name(self, name: str) -> Self:
-        self.name = name
+    def set_gardener(self, gardener: str) -> Self:
+        self._gardener = gardener
         return (self)
 
 
-#def garden
-
 class Plant:
 
-    def __init__(self, name: str, height: int = 0, age: int = 0) -> None:
-        self.name: str = ""
-        self.age: int = 0
-        self.height: int = 0
+    def __init__(self, gardener: str, name: str,
+                 height: int = 0, age: int = 0) -> None:
+        self._gardener: str = ""
+        self._name: str = ""
+        self._age: int = 0
+        self._height: int = 0
+        self.set_gardener(gardener)
         self.set_name(name)
         self.set_age(age)
         self.set_height(height)
 
+    def get_gardener(self) -> str:
+        return (self._gardener)
+
+    def set_gardener(self, gardener: str) -> Self:
+        self._gardener = gardener
+        return (self)
+
     def get_name(self) -> str:
-        return (self.name)
+        return (self._name)
 
     def get_age(self) -> int:
-        return (self.age)
+        return (self._age)
 
     def get_height(self) -> int:
-        return (self.height)
+        return (self._height)
 
     def set_name(self, name: str) -> Self:
-        self.name = name
+        self._name = name
         return (self)
 
     def set_age(self, days: int) -> int:
         if days > 0:
-            self.age = days
+            self._age = days
             return (0)
         else:
             return (1)
 
     def set_height(self, height: int) -> int:
         if height > 0:
-            self.height = height
+            self._height = height
             return (0)
         else:
             return (1)
@@ -67,24 +76,20 @@ class Plant:
         msg += "Security: Negative height rejected"
         return (msg)
 
-    def get_info(self):
-        print(self.name, ":  ", self.height, sep="", end="")
-        print(self.age, " days old", sep="")
-
 
 class FloweringPlant(Plant):
 
-    def __init__(self, name: str, height: int = 0, age: int = 0,
+    def __init__(self, gardener: str, name: str, height: int = 0, age: int = 0,
                  color: str = "no") -> None:
-        super().__init__(name, height, age)
-        self.color: str = ""
+        super().__init__(gardener, name, height, age)
+        self._color: str = ""
         self.set_color(color)
 
     def get_color(self) -> str:
-        return (self.color)
+        return (self._color)
 
     def set_color(self, color: str) -> Self:
-        self.color = color
+        self._color = color
         return (self)
 
     def bloom(self) -> Self:
@@ -93,121 +98,206 @@ class FloweringPlant(Plant):
 
 class PrizeFlower(FloweringPlant):
 
-    def __init__(self, name: str, height: int = 0, age: int = 0, 
+    def __init__(self, gardener: str, name: str, height: int = 0, age: int = 0,
                  color: str = "", prize: int = 0) -> None:
-        super().__init__(name, height, age, color)
-        self.prize: int = 0
+        super().__init__(gardener, name, height, age, color)
+        self._prize: int = 0
         self.set_prize(prize)
 
     def get_prize(self) -> int:
-        return (self.prize)
+        return (self._prize)
 
     def set_prize(self, prize: int) -> Self:
-        self.prize = prize
+        self._prize = prize
         return (self)
 
 
 class Tree(Plant):
 
-    def __init__(self, name: str, height: int = 0, age: int = 0,
+    def __init__(self, gardener: str, name: str, height: int = 0, age: int = 0,
                  trunk: int = 0, shade: int = 0) -> None:
-        super().__init__(name, height, age)
-        self.trunk: int = trunk
-        self.shade: int = shade
+        super().__init__(gardener, name, height, age)
+        self._trunk: int = 0
+        self._shade: int = 0
+        self.set_trunk(trunk)
+        self.set_shade(shade)
 
     def get_trunk(self) -> int:
-        return (self.trunk)
+        return (self._trunk)
+
+    def get_shade(self) -> int:
+        return (self._shade)
 
     def set_trunk(self, trunk: int) -> Self:
-        self.trunk = trunk
+        self._trunk = trunk
         return (self)
 
-    def produce_shade(self) -> int:
-        return (self.shade)
+    def set_shade(self, shade: int) -> Self:
+        self._shade = shade
+        return (self)
 
 
 class Vegetable(Plant):
 
-    def __init__(self, name: str, height: int = 0, age: int = 0,
+    def __init__(self, gardener: str, name: str, height: int = 0, age: int = 0,
                  harvest: str = "summer", nutrition: int = 0) -> None:
-        super().__init__(name, height, age)
-        self.harvest: str = harvest
-        self.nutrition: int = nutrition
+        super().__init__(gardener, name, height, age)
+        self._harvest: str = ""
+        self._nutrition: int = 0
+        self.set_harvest(harvest)
+        self.set_nutrition(nutrition)
 
     def get_harvest(self) -> str:
-        return (self.harvest)
+        return (self._harvest)
 
     def get_nutrition(self) -> int:
-        return (self.nutrition)
+        return (self._nutrition)
 
     def set_harvest(self, harvest: str) -> Self:
-        self.harvest = harvest
+        self._harvest = harvest
         return (self)
 
     def set_nutrition(self, nutrition: int) -> Self:
-        self.nutrition = nutrition
+        self._nutrition = nutrition
         return (self)
 
 
-def ft_creat_garden(stream: list) -> GardenManager:
-    
-    garden = GardenManager(stream[0])
-    return (garden)
+class GardenManager:
+
+    _height_test: bool = True
+    _nb_gardens: int = 0
+    _gardens: list[Garden] = []
+
+    @classmethod
+    def get_nb_gardens(cls) -> int:
+        return (cls._nb_gardens)
+
+    @classmethod
+    def set_nb_gardens(cls, nb: int) -> None:
+        cls._nb_gardens = nb
+
+    @classmethod
+    def get_height_test(cls) -> bool:
+        return (cls._height_test)
+
+    @classmethod
+    def set_height_test(cls, height_test: bool) -> None:
+        cls._height_test = height_test
+
+    @classmethod
+    def create_garden_network(cls, gardener: str) -> Garden:
+        garden = next((g for g in cls._gardens
+                       if g.get_gardener() == gardener), None)
+        if garden is None:
+            garden = Garden(gardener)
+            cls._gardens.append(garden)
+        return (garden)
+
+    @classmethod
+    def add_plant(cls, p: dict) -> Plant:
+        garden: Garden
+        garden = cls.create_garden_network(p["gardener"])
+        match p["type"]:
+            case "flower":
+                plant = FloweringPlant(garden.get_gardener(), p["name"],
+                                       p["height"], p["age"],
+                                       p["color"])
+            case "prizeflower":
+                plant = PrizeFlower(garden.get_gardener(), p["name"],
+                                    p["height"], p["age"],
+                                    p["color"], p["prize"])
+            case "tree":
+                plant = Tree(garden.get_gardener(), p["name"],
+                             p["height"], p["age"],
+                             p["trunk"], p["shade"])
+            case "vegetable":
+                plant = Vegetable(garden.get_gardener(), p["name"],
+                                  p["height"], p["age"],
+                                  p["harvest"], p["nutrition"])
+            case _:
+                plant = Plant(garden.get_gardener(), p["name"],
+                              p["height"], p["age"])
+        garden.plants.append(plant)
+        # garden = cls.create_garden_network(new_p[0])
+        # match new_p[1]:
+        #     case "flower":
+        #         plant = FloweringPlant(garden.get_gardener(), new_p[2],
+        #                                new_p[3], new_p[4], new_p[5])
+        #     case "prizeflower":
+        #         plant = PrizeFlower(garden.get_gardener(), new_p[2],
+        #                             new_p[3], new_p[4], new_p[5], new_p[6])
+        #     case "tree":
+        #         plant = Tree(garden.get_gardener(), new_p[2],
+        #                      new_p[3], new_p[4], new_p[5], new_p[6])
+        #     case "vegetable":
+        #         plant = Vegetable(garden.get_gardener(), new_p[2],
+        #                           new_p[3], new_p[4], new_p[5], new_p[6])
+        #     case _:
+        #         plant = Plant(garden.get_gardener(), new_p[2],
+        #                       new_p[3], new_p[4])
+        # garden.plants.append(plant)
+        GardenManager.set_nb_gardens(GardenManager.get_nb_gardens() + 1)
+        return (plant)
 
 
-def ft_creat_plant(stream: list) -> Plant:
-    match stream[1]:
-        case "flower":
-            plant = FloweringPlant(stream[2], stream[3], stream[4], stream[5])
-        case "prizeflower":
-            plant = PrizeFlower(stream[2], stream[3], stream[4], stream[5], stream[6])
-        case "tree":
-            plant = Tree(stream[2], stream[3], stream[4],
-                         stream[5], stream[6])
-        case "vegetable":
-            plant = Vegetable(stream[2], stream[3], stream[4],
-                              stream[5], stream[6])
-        case _:
-            plant = Plant(stream[2], stream[3], stream[4])
-    return (plant)
-
-
-def ft_garden_analytics():
+def ft_creat_gardens() -> None:
     streamline = [["Alice", "flower", "Rose", 25, 15, "red"],
                   ["Alice", "prizeflower", "Sunflower", 50, 12, "yellow", 10],
-                  ["Alice", "tree", "Oak", 500, 1825, 50, 78],
+                  ["Alice", "tree", "Oak Tree", 500, 1825, 50, 78],
                   ["Tatiana", "flower", "Tulipe", 42, 16, "blue"],
                   ["Bob", "tree", "Chestnut", 650, 3650, 64, 42],
                   ["Bob", "vegetable", "Tomato", 80, 90, "summer", 15],
                   ["Bob", "vegetable", "Chili pepper", 64, 42, "fall", 20]]
-    gardens: list [GardenManager] = []
-    plants: list[Plant | FloweringPlant | Tree | Vegetable] = []
-    for stream in streamline:
-        garden = next((g for g in gardens if g.get_name() == stream[0]), None)
-        if garden == None:
-            garden = GardenManager(stream[0])
-            gardens.append(garden)
-        garden.plants.append(ft_creat_plant(stream))
+    streamjson = [
+        {"gardener": "Alice", "type": "flower", "name": "Rose",
+         "height": 25, "age": 15, "color": "red"},
+        {"gardener": "Alice", "type": "prizeflower", "name": "Sunflower",
+         "height": 50, "age": 12, "color": "yellow", "prize": 10},
+        {"gardener": "Alice", "type": "tree", "name": "Oak Tree",
+         "height": 500, "age": 1825, "trunk": 50, "shade": 78},
+        {"gardener": "Tatiana", "type": "flower", "name": "Tulipe",
+         "height": 42, "age": 16, "color": "blue"},
+        {"gardener": "Bob", "type": "tree", "name": "Chestnut",
+         "height": 650, "age": 3650, "trunk": 64, "shade": 42},
+        {"gardener": "Bob", "type": "vegetable", "name": "Tomato",
+         "height": 80, "age": 90, "harvest": "summer", "nutrition": 15},
+        {"gardener": "Bob", "type": "vegetable", "name": "Chili pepper",
+         "height": 64, "age": 42, "harvest": "fall", "nutrition": 20}]
+    for stream in streamjson:
+        plant = GardenManager.add_plant(stream)
+        print(f"Added {plant.get_name()} to {plant.get_gardener()}'s garden")
 
+
+def ft_global_stats() -> None:
+    print(f"Height validation test: {GardenManager.get_height_test()}")
+    print("Garden scores -", end="")
+    for g in GardenManager._gardens:
+        print(f" {g.get_gardener()}: 42", end="")
+    print("")
+    print(f"Total gardens managed: {GardenManager.get_nb_gardens()}")
+
+
+def ft_garden_analytics():
     print("=== Garden Management System Demo ===")
     print("")
-    for g in gardens:
-        print(f"=== {g.name}'s Garden Report ===")
-    # for p in plants:
-    #     print(f"{p.name} ({type(p).__name__}):", end=" ")
-    #     print(f"{p.get_height()}cm, {p.get_age()} days,", end=" ")
-    #     match type(p).__name__:
-    #         case "Flower":
-    #             print(f"{p.get_color()} color")
-    #             print(f"{p.name} is blooming beautifully!")
-    #         case "Tree":
-    #             print(f"{p.get_trunk()}cm diameter")
-    #             print(f"{p.name} provides {p.produce_shade()}", end=" ")
-    #             print(" square meters of shade")
-    #         case "Vegetable":
-    #             print(f"{p.get_harvest()} harvest")
-    #             print(f"{p.name} contains {p.get_nutrition()} Kcal per 100g")
-    #     print("")
+    ft_creat_gardens()
+    print("")
+
+    for g in GardenManager._gardens:
+        print(f"=== {g.get_gardener()}'s Garden Report ===")
+        print("Plants in garden:")
+        for p in g.plants:
+            print(f"- {p.get_name()}: {p.get_height()}cm", end="")
+            match type(p).__name__:
+                case "FloweringPlant":
+                    print(f" {p.get_color()} flowers (blooming)")
+                case "PrizeFlower":
+                    print(f" {p.get_color()} flowers (blooming)", end="")
+                    print(f" Prize points: {p.get_prize()}")
+                case _:
+                    print("")
+        print("")
+    ft_global_stats()
 
 
 if __name__ == "__main__":
