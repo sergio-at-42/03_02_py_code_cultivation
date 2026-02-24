@@ -9,6 +9,7 @@ class Garden:
         self._gardener: str = ""
         self.plants: list[Plant | FloweringPlant | PrizeFlower | Tree |
                           Vegetable] = []
+        self.types_plants: dict = {}
         self.set_gardener(gardener)
 
     def get_gardener(self) -> str:
@@ -17,6 +18,18 @@ class Garden:
     def set_gardener(self, gardener: str) -> Self:
         self._gardener = gardener
         return (self)
+
+    def get_total_grow(self) -> int:
+        total_grow: int = 0
+        for p in self.plants:
+            total_grow += p.get_grow()
+        return (total_grow)
+    
+    def get_types_plants(self) -> dict:
+        for p in self.plants:
+            self.types_plants.setdefault(type(p).__name__, 0)
+            self.types_plants[type(p).__name__] += 1
+        return (self.types_plants)
 
 
 class Plant:
@@ -27,6 +40,7 @@ class Plant:
         self._name: str = ""
         self._age: int = 0
         self._height: int = 0
+        self._grow: int = 0
         self.set_gardener(gardener)
         self.set_name(name)
         self.set_age(age)
@@ -48,6 +62,9 @@ class Plant:
     def get_height(self) -> int:
         return (self._height)
 
+    def get_grow(self) -> int:
+        return (self._grow)
+
     def set_name(self, name: str) -> Self:
         self._name = name
         return (self)
@@ -65,6 +82,10 @@ class Plant:
             return (0)
         else:
             return (1)
+
+    def set_grow(self, grow: int) -> Self:
+        self._grow = grow
+        return (self)
 
     def error_msg_age(self, days: int) -> str:
         msg = f"Invalid operation attempted: age {days} days [REJECTED]\n"
@@ -218,36 +239,11 @@ class GardenManager:
                 plant = Plant(garden.get_gardener(), p["name"],
                               p["height"], p["age"])
         garden.plants.append(plant)
-        # garden = cls.create_garden_network(new_p[0])
-        # match new_p[1]:
-        #     case "flower":
-        #         plant = FloweringPlant(garden.get_gardener(), new_p[2],
-        #                                new_p[3], new_p[4], new_p[5])
-        #     case "prizeflower":
-        #         plant = PrizeFlower(garden.get_gardener(), new_p[2],
-        #                             new_p[3], new_p[4], new_p[5], new_p[6])
-        #     case "tree":
-        #         plant = Tree(garden.get_gardener(), new_p[2],
-        #                      new_p[3], new_p[4], new_p[5], new_p[6])
-        #     case "vegetable":
-        #         plant = Vegetable(garden.get_gardener(), new_p[2],
-        #                           new_p[3], new_p[4], new_p[5], new_p[6])
-        #     case _:
-        #         plant = Plant(garden.get_gardener(), new_p[2],
-        #                       new_p[3], new_p[4])
-        # garden.plants.append(plant)
         GardenManager.set_nb_gardens(GardenManager.get_nb_gardens() + 1)
         return (plant)
 
 
 def ft_creat_gardens() -> None:
-    streamline = [["Alice", "flower", "Rose", 25, 15, "red"],
-                  ["Alice", "prizeflower", "Sunflower", 50, 12, "yellow", 10],
-                  ["Alice", "tree", "Oak Tree", 500, 1825, 50, 78],
-                  ["Tatiana", "flower", "Tulipe", 42, 16, "blue"],
-                  ["Bob", "tree", "Chestnut", 650, 3650, 64, 42],
-                  ["Bob", "vegetable", "Tomato", 80, 90, "summer", 15],
-                  ["Bob", "vegetable", "Chili pepper", 64, 42, "fall", 20]]
     streamjson = [
         {"gardener": "Alice", "type": "flower", "name": "Rose",
          "height": 25, "age": 15, "color": "red"},
@@ -266,23 +262,10 @@ def ft_creat_gardens() -> None:
     for stream in streamjson:
         plant = GardenManager.add_plant(stream)
         print(f"Added {plant.get_name()} to {plant.get_gardener()}'s garden")
-
-
-def ft_global_stats() -> None:
-    print(f"Height validation test: {GardenManager.get_height_test()}")
-    print("Garden scores -", end="")
-    for g in GardenManager._gardens:
-        print(f" {g.get_gardener()}: 42", end="")
-    print("")
-    print(f"Total gardens managed: {GardenManager.get_nb_gardens()}")
-
-
-def ft_garden_analytics():
-    print("=== Garden Management System Demo ===")
-    print("")
-    ft_creat_gardens()
     print("")
 
+
+def ft_garden_report() -> None:
     for g in GardenManager._gardens:
         print(f"=== {g.get_gardener()}'s Garden Report ===")
         print("Plants in garden:")
@@ -297,6 +280,29 @@ def ft_garden_analytics():
                 case _:
                     print("")
         print("")
+        print(f"Plants added: {g.plants.__len__()}, Total growth: {g.get_total_grow()}cm")
+        print(f"Plant types:", end="")
+        for tp, total_tp in g.get_types_plants().items():
+            print(f" {total_tp} {tp}", end="")
+        print("")
+        print("")
+
+
+def ft_global_stats() -> None:
+    print(f"Height validation test: {GardenManager.get_height_test()}")
+    print("Garden scores -", end="")
+    for g in GardenManager._gardens:
+        print(f" {g.get_gardener()}: 42", end=" ")
+    print("")
+    print(f"Total gardens managed: {GardenManager.get_nb_gardens()}")
+    print("")
+
+
+def ft_garden_analytics():
+    print("=== Garden Management System Demo ===")
+    print("")
+    ft_creat_gardens()
+    ft_garden_report()
     ft_global_stats()
 
 
