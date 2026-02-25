@@ -24,12 +24,16 @@ class Garden:
         for p in self.plants:
             total_grow += p.get_grow()
         return (total_grow)
-    
+
     def get_types_plants(self) -> dict:
         for p in self.plants:
             self.types_plants.setdefault(type(p).__name__, 0)
             self.types_plants[type(p).__name__] += 1
         return (self.types_plants)
+
+    def get_score(self) -> int:
+        score = sum(p.get_height() for p in self.plants)
+        return (score)
 
 
 class Plant:
@@ -87,12 +91,14 @@ class Plant:
         self._grow = grow
         return (self)
 
-    def error_msg_age(self, days: int) -> str:
+    @staticmethod
+    def error_msg_age(days: int) -> str:
         msg = f"Invalid operation attempted: age {days} days [REJECTED]\n"
         msg += "Security: Negative age rejected"
         return (msg)
 
-    def error_msg_height(self, height: int) -> str:
+    @staticmethod
+    def error_msg_height(height: int) -> str:
         msg = f"Invalid operation attempted: height {height}cm [REJECTED]\n"
         msg += "Security: Negative height rejected"
         return (msg)
@@ -185,29 +191,40 @@ class Vegetable(Plant):
 
 class GardenManager:
 
-    _height_test: bool = True
-    _nb_gardens: int = 0
     _gardens: list[Garden] = []
 
     @classmethod
-    def get_nb_gardens(cls) -> int:
-        return (cls._nb_gardens)
+    def get_gardens(cls) -> list[Garden]:
+        return (cls._gardens)
 
     @classmethod
-    def set_nb_gardens(cls, nb: int) -> None:
-        cls._nb_gardens = nb
+    def set_gardens(cls, gardens: list[Garden]) -> list[Garden]:
+        cls._gardens = gardens
+        return (cls._gardens)
 
-    @classmethod
-    def get_height_test(cls) -> bool:
-        return (cls._height_test)
+    class GardenStats:
 
-    @classmethod
-    def set_height_test(cls, height_test: bool) -> None:
-        cls._height_test = height_test
+        _height_test: bool = True
+        _nb_gardens: int = 0
+
+        @classmethod
+        def get_nb_gardens(cls) -> int:
+            return (cls._nb_gardens)
+
+        @classmethod
+        def set_nb_gardens(cls, nb: int) -> None:
+            cls._nb_gardens = nb
+
+        @classmethod
+        def get_height_test(cls) -> bool:
+            cls._height_test = bool(sum(
+                sum(plant.get_height() for plant in garden.plants)
+                for garden in GardenManager.get_gardens()))
+            return (cls._height_test)
 
     @classmethod
     def create_garden_network(cls, gardener: str) -> Garden:
-        garden = next((g for g in cls._gardens
+        garden = next((g for g in cls.get_gardens()
                        if g.get_gardener() == gardener), None)
         if garden is None:
             garden = Garden(gardener)
@@ -239,7 +256,23 @@ class GardenManager:
                 plant = Plant(garden.get_gardener(), p["name"],
                               p["height"], p["age"])
         garden.plants.append(plant)
-        GardenManager.set_nb_gardens(GardenManager.get_nb_gardens() + 1)
+        cls.GardenStats.set_nb_gardens(cls.GardenStats.get_nb_gardens() + 1)
+        return (plant)
+
+    @classmethod
+    def grow_plant(cls, grow: dict) -> Plant:
+        garden: Garden
+        garden = cls.create_garden_network(grow["gardener"])
+        plant = next((p for p in garden.plants
+                      if p.get_name() == grow["name"]), None)
+        if plant is None:
+            cls.add_plant({"gardener": grow["gardener"],
+                           "type": "plant",
+                           "name": grow["name"],
+                           "height": 0,
+                           "age": 0})
+        plant.set_height(plant.get_height() + grow["grow"])
+        plant.set_grow(plant.get_grow() + grow["grow"])
         return (plant)
 
 
@@ -265,8 +298,25 @@ def ft_creat_gardens() -> None:
     print("")
 
 
-def ft_garden_report() -> None:
+def ft_grow_plant() -> None:
+    streamjson = [
+        {"gardener": "Alice", "name": "Rose", "grow": 1},
+        {"gardener": "Alice", "name": "Sunflower", "grow": 1},
+        {"gardener": "Alice", "name": "Oak Tree", "grow": 1},
+        {"gardener": "Tatiana", "name": "Tulipe", "grow": 12},
+        {"gardener": "Bob", "name": "Tomato", "grow": 4},
+        {"gardener": "Bob", "name": "Chili pepper", "grow": 6}]
+    for stream in streamjson:
+        GardenManager.grow_plant(stream)
     for g in GardenManager._gardens:
+        print(f"{g.get_gardener()} is helping all plants grow...")
+        for p in g.plants:
+            print(f"{p.get_name()} grew {p.get_grow()}cm")
+        print("")
+
+
+def ft_garden_report() -> None:
+    for g in GardenManager.get_gardens():
         print(f"=== {g.get_gardener()}'s Garden Report ===")
         print("Plants in garden:")
         for p in g.plants:
@@ -280,8 +330,9 @@ def ft_garden_report() -> None:
                 case _:
                     print("")
         print("")
-        print(f"Plants added: {g.plants.__len__()}, Total growth: {g.get_total_grow()}cm")
-        print(f"Plant types:", end="")
+        print(f"Plants added: {g.plants.__len__()},", end="")
+        print(f"Total growth: {g.get_total_grow()}cm")
+        print("Plant types:", end="")
         for tp, total_tp in g.get_types_plants().items():
             print(f" {total_tp} {tp}", end="")
         print("")
@@ -289,12 +340,14 @@ def ft_garden_report() -> None:
 
 
 def ft_global_stats() -> None:
-    print(f"Height validation test: {GardenManager.get_height_test()}")
+    print("Height validation test:", end=" ")
+    print(f"{GardenManager.GardenStats.get_height_test()}")
     print("Garden scores -", end="")
     for g in GardenManager._gardens:
-        print(f" {g.get_gardener()}: 42", end=" ")
+        print(f" {g.get_gardener()}: {g.get_score()}", end=" ")
     print("")
-    print(f"Total gardens managed: {GardenManager.get_nb_gardens()}")
+    print("Total gardens managed:", end=" ")
+    print(f"{GardenManager.GardenStats.get_nb_gardens()}")
     print("")
 
 
@@ -302,6 +355,7 @@ def ft_garden_analytics():
     print("=== Garden Management System Demo ===")
     print("")
     ft_creat_gardens()
+    ft_grow_plant()
     ft_garden_report()
     ft_global_stats()
 
