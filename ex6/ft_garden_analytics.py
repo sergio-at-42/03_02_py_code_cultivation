@@ -7,8 +7,7 @@ class Garden:
 
     def __init__(self, gardener: str) -> None:
         self._gardener: str = ""
-        self.plants: list[Plant | FloweringPlant | PrizeFlower | Tree |
-                          Vegetable] = []
+        self.plants: list[Plant] = []
         self.types_plants: dict = {}
         self.set_gardener(gardener)
 
@@ -234,6 +233,7 @@ class GardenManager:
     @classmethod
     def add_plant(cls, p: dict) -> Plant:
         garden: Garden
+        plant: Plant
         garden = cls.create_garden_network(p["gardener"])
         match p["type"]:
             case "flower":
@@ -266,11 +266,11 @@ class GardenManager:
         plant = next((p for p in garden.plants
                       if p.get_name() == grow["name"]), None)
         if plant is None:
-            cls.add_plant({"gardener": grow["gardener"],
-                           "type": "plant",
-                           "name": grow["name"],
-                           "height": 0,
-                           "age": 0})
+            plant = cls.add_plant({"gardener": grow["gardener"],
+                                   "type": "plant",
+                                   "name": grow["name"],
+                                   "height": 0,
+                                   "age": 0})
         plant.set_height(plant.get_height() + grow["grow"])
         plant.set_grow(plant.get_grow() + grow["grow"])
         return (plant)
@@ -321,14 +321,13 @@ def ft_garden_report() -> None:
         print("Plants in garden:")
         for p in g.plants:
             print(f"- {p.get_name()}: {p.get_height()}cm", end="")
-            match type(p).__name__:
-                case "FloweringPlant":
-                    print(f" {p.get_color()} flowers (blooming)")
-                case "PrizeFlower":
-                    print(f" {p.get_color()} flowers (blooming)", end="")
-                    print(f" Prize points: {p.get_prize()}")
-                case _:
-                    print("")
+            if isinstance(p, FloweringPlant):
+                print(f" {p.get_color()} flowers (blooming)")
+            elif isinstance(p, PrizeFlower):
+                print(f" {p.get_color()} flowers (blooming)", end="")
+                print(f" Prize points: {p.get_prize()}")
+            else:
+                print("")
         print("")
         print(f"Plants added: {g.plants.__len__()},", end="")
         print(f"Total growth: {g.get_total_grow()}cm")

@@ -115,6 +115,7 @@ class Vegetable(Plant):
 
 
 def ft_creat_plant(stream: list) -> Plant:
+    plant: Plant
     match stream[0]:
         case "flower":
             plant = Flower(stream[1], stream[2], stream[3], stream[4])
@@ -129,14 +130,14 @@ def ft_creat_plant(stream: list) -> Plant:
     return (plant)
 
 
-def ft_plant_types():
+def ft_plant_types() -> None:
     streamline = [["flower", "Rose", 25, 15, "red"],
                   ["flower", "Tulipe", 30, 12, "yellow"],
                   ["tree", "Oak", 500, 1825, 50, 78],
                   ["tree", "Chestnut", 650, 3650, 64, 42],
                   ["vegetable", "Tomato", 80, 90, "summer", 15],
                   ["vegetable", "Chili pepper", 64, 42, "fall", 20]]
-    plants: list[Plant | Flower | Tree | Vegetable] = []
+    plants: list = []
     for stream in streamline:
         plants.append(ft_creat_plant(stream))
     print("=== Garden Plant Types ===")

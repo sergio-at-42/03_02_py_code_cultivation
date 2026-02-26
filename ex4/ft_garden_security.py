@@ -49,7 +49,7 @@ class Plant:
         msg += "Security: Negative height rejected"
         return (msg)
 
-    def get_info(self):
+    def get_info(self) -> None:
         print(self.name, ":  ", self.height, sep="", end="")
         print(self.age, " days old", sep="")
 
@@ -78,7 +78,7 @@ def ft_update_plant(plant: Plant, age: int, height: int) -> int:
     return (error_height + error_age)
 
 
-def ft_garden_security():
+def ft_garden_security() -> None:
     plants: list[Plant] = []
     streamline: list[list] = [["Rose", 25, 30]]
     print("=== Plant Factory Output ===")
