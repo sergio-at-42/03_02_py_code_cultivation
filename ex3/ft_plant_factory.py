@@ -2,47 +2,51 @@
 
 class Plant:
 
-    def __init__(self, name, height, age):
-        self.name = name
-        self.height = height
-        self.age = age
-        self.growth = 0
+    nb_plant: int = 0
 
-    def get_info(self):
+    def __init__(self, name: str = "Unknown plant",
+                 height: int = 0, age: int = 0) -> None:
+        self.name: str = name
+        self.height: int = height
+        self.age: int = age
+        self.growth: int = 0
+        Plant.nb_plant += 1
+
+    def get_info(self) -> None:
         print(self.name, ":  ", self.height, sep="", end="")
         print(self.age, " days old", sep="")
 
-    def set_age(self, days):
+    def set_age(self, days) -> None:
         self.set_grow(int(self.height * 0.25 * days / 7))
         self.age += days
 
-    def set_grow(self, centimeters):
+    def set_grow(self, centimeters) -> None:
         self.growth = centimeters
         self.height += centimeters
 
 
-def ft_creat_plant(stream) -> Plant:
-    plant = Plant(stream[0], stream[1], stream[2])
-    print("Created: ", plant.name, sep="", end="")
-    print(" (", plant.height, "cm, ", plant.age, " days)")
-    return (plant)
-
-
-def ft_plant_factory():
-    streamline = [["Rose", 25, 30],
-                  ["Oak", 200, 365],
-                  ["Cactus", 15, 120],
-                  ["Sunflower", 80, 45],
-                  ["Fern", 15, 120]]
-    plants = list()
-    nb_plant = 0
-    print("=== Plant Factory Output ===")
+def ft_creat_plant(plants: list[Plant]) -> None:
+    streamline: list[tuple[str, int, int]] = [("Rose", 25, 30),
+                                              ("Oak", 200, 365),
+                                              ("Cactus", 15, 120),
+                                              ("Sunflower", 80, 45),
+                                              ("Fern", 15, 120)]
     for stream in streamline:
-        plants.append(ft_creat_plant(stream))
-        nb_plant += 1
+        plants.append(Plant(stream[0], stream[1], stream[2]))
 
+
+def ft_plant_factory() -> None:
+
+    plants: list[Plant] = []
+    print("=== Plant Factory Output ===")
+    ft_creat_plant(plants)
+    plants.append(Plant())
+    plants.append(Plant("onion"))
+    for plant in plants:
+        print("Created: ", plant.name, sep="", end="")
+        print(" (", plant.height, "cm, ", plant.age, " days)")
     print("")
-    print("Total plants created: ", nb_plant)
+    print("Total plants created: ", Plant.nb_plant)
 
 
 if __name__ == "__main__":

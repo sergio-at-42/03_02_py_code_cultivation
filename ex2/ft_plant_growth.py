@@ -2,27 +2,27 @@
 
 class Plant:
 
-    def __init__(self, name, height, age):
-        self.name = name
-        self.height = height
-        self.age = age
-        self.growth = 0
+    def __init__(self, name: str, height: int, age: int) -> None:
+        self.name: str = name
+        self.height: int = height
+        self.age: int = age
+        self.growth: int = 0
 
-    def get_info(self):
+    def get_info(self) -> None:
         print(self.name, ":  ", end="")
         print(self.height, "cm, ", end="")
         print(self.age, " days old", sep="")
 
-    def set_age(self, days):
+    def set_age(self, days) -> None:
         self.set_grow(int(self.height * 0.25 * days / 7))
         self.age += days
 
-    def set_grow(self, centimeters):
+    def set_grow(self, centimeters) -> None:
         self.growth = centimeters
         self.height += centimeters
 
 
-def ft_disp_day(day, plants):
+def ft_disp_day(day: int, plants: list[Plant]) -> None:
     print("=== Day", day, "===")
     for plant in plants:
         plant.set_age(day - 1)
@@ -31,8 +31,8 @@ def ft_disp_day(day, plants):
             print("Growth this week: +", plant.growth, "cm", sep="")
 
 
-def ft_plant_growth():
-    plants = list()
+def ft_plant_growth() -> None:
+    plants: list[Plant] = []
     plants.append(Plant("Rose", 25, 30))
     plants.append(Plant("Sunflower", 80, 45))
     plants.append(Plant("Cactus", 15, 120))

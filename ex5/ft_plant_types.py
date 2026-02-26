@@ -6,35 +6,36 @@ from typing import Self
 class Plant:
 
     def __init__(self, name: str, height: int = 0, age: int = 0):
-        self.name: str = name
-        self.starting_age: int = age
-        self.age: int = age
-        self.starting_height: int = height
-        self.height: int = height
+        self._name: str = ""
+        self._age: int = 0
+        self._height: int = 0
+        self.set_name(name)
+        self.set_age(age)
+        self.set_height(height)
 
     def get_name(self) -> str:
-        return (self.name)
+        return (self._name)
 
     def get_age(self) -> int:
-        return (self.age)
+        return (self._age)
 
     def get_height(self) -> int:
-        return (self.height)
+        return (self._height)
 
     def set_name(self, name: str) -> Self:
-        self.name = name
+        self._name = name
         return (self)
 
     def set_age(self, days: int) -> int:
         if days > 0:
-            self.age = days
+            self._age = days
             return (0)
         else:
             return (1)
 
     def set_height(self, height: int) -> int:
         if height > 0:
-            self.height = height
+            self._height = height
             return (0)
         else:
             return (1)
@@ -50,8 +51,8 @@ class Plant:
         return (msg)
 
     def get_info(self):
-        print(self.name, ":  ", self.height, sep="", end="")
-        print(self.age, " days old", sep="")
+        print(self.get_name(), ":  ", self.get_height(), sep="", end="")
+        print(self.get_age(), " days old", sep="")
 
 
 class Flower(Plant):
@@ -59,13 +60,13 @@ class Flower(Plant):
     def __init__(self, name: str, height: int = 0, age: int = 0,
                  color: str = "rouge"):
         super().__init__(name, height, age)
-        self.color: str = color
+        self._color: str = color
 
     def get_color(self) -> str:
-        return (self.color)
+        return (self._color)
 
     def set_color(self, color: str) -> Self:
-        self.color = color
+        self._color = color
         return (self)
 
     def bloom(self) -> Self:
@@ -77,18 +78,24 @@ class Tree(Plant):
     def __init__(self, name: str, height: int = 0, age: int = 0,
                  trunk: int = 0, shade: int = 0):
         super().__init__(name, height, age)
-        self.trunk: int = trunk
-        self.shade: int = shade
+        self._trunk: int = trunk
+        self._shade: int = shade
+        self.set_trunk(trunk)
+        self.set_shade(shade)
 
     def get_trunk(self) -> int:
-        return (self.trunk)
+        return (self._trunk)
+
+    def get_shade(self) -> int:
+        return (self._shade)
 
     def set_trunk(self, trunk: int) -> Self:
-        self.trunk = trunk
+        self._trunk = trunk
         return (self)
 
-    def produce_shade(self) -> int:
-        return (self.shade)
+    def set_shade(self, shade: int) -> Self:
+        self._shade = shade
+        return (self)
 
 
 class Vegetable(Plant):
@@ -96,21 +103,21 @@ class Vegetable(Plant):
     def __init__(self, name: str, height: int = 0, age: int = 0,
                  harvest: str = "summer", nutrition: int = 0):
         super().__init__(name, height, age)
-        self.harvest: str = harvest
-        self.nutrition: int = nutrition
+        self._harvest: str = harvest
+        self._nutrition: int = nutrition
 
     def get_harvest(self) -> str:
-        return (self.harvest)
+        return (self._harvest)
 
     def get_nutrition(self) -> int:
-        return (self.nutrition)
+        return (self._nutrition)
 
     def set_harvest(self, harvest: str) -> Self:
-        self.harvest = harvest
+        self._harvest = harvest
         return (self)
 
     def set_nutrition(self, nutrition: int) -> Self:
-        self.nutrition = nutrition
+        self._nutrition = nutrition
         return (self)
 
 
@@ -143,19 +150,20 @@ def ft_plant_types() -> None:
     print("=== Garden Plant Types ===")
     print("")
     for p in plants:
-        print(f"{p.name} ({type(p).__name__}):", end=" ")
+        print(f"{p.get_name()} ({type(p).__name__}):", end=" ")
         print(f"{p.get_height()}cm, {p.get_age()} days,", end=" ")
         match type(p).__name__:
             case "Flower":
                 print(f"{p.get_color()} color")
-                print(f"{p.name} is blooming beautifully!")
+                print(f"{p.get_name()} is blooming beautifully!")
             case "Tree":
                 print(f"{p.get_trunk()}cm diameter")
-                print(f"{p.name} provides {p.produce_shade()}", end=" ")
+                print(f"{p.get_name()} provides {p.get_shade()}", end=" ")
                 print(" square meters of shade")
             case "Vegetable":
                 print(f"{p.get_harvest()} harvest")
-                print(f"{p.name} contains {p.get_nutrition()} Kcal per 100g")
+                print(f"{p.get_name()}", end=" ")
+                print(f"contains {p.get_nutrition()} Kcal per 100g")
         print("")
 
 

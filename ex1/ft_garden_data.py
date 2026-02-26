@@ -2,14 +2,14 @@
 
 class Plant:
 
-    def __init__(self, name, height, age):
-        self.name = name
-        self.height = height
-        self.age = age
+    def __init__(self, name: str, height: int, age: int) -> None:
+        self.name: str = name
+        self.height: int = height
+        self.age: int = age
 
 
 def ft_garden_data() -> None:
-    plants = list()
+    plants: list[Plant] = []
     plants.append(Plant("Rose", 25, 30))
     plants.append(Plant("Sunflower", 80, 45))
     plants.append(Plant("Cactus", 15, 120))
