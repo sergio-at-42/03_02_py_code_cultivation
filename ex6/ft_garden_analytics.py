@@ -8,7 +8,7 @@ class Garden:
     def __init__(self, gardener: str) -> None:
         self._gardener: str = ""
         self.plants: list[Plant] = []
-        self.types_plants: dict = {}
+        self.types_plants: dict[str, int] = {}
         self.set_gardener(gardener)
 
     def get_gardener(self) -> str:
@@ -24,7 +24,7 @@ class Garden:
             total_grow += p.get_grow()
         return (total_grow)
 
-    def get_types_plants(self) -> dict:
+    def get_types_plants(self) -> dict[str, int]:
         for p in self.plants:
             self.types_plants.setdefault(type(p).__name__, 0)
             self.types_plants[type(p).__name__] += 1
@@ -350,7 +350,7 @@ def ft_global_stats() -> None:
     print("")
 
 
-def ft_garden_analytics():
+def ft_garden_analytics() -> None:
     print("=== Garden Management System Demo ===")
     print("")
     ft_creat_gardens()

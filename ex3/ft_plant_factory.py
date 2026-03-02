@@ -16,11 +16,11 @@ class Plant:
         print(self.name, ":  ", self.height, sep="", end="")
         print(self.age, " days old", sep="")
 
-    def set_age(self, days) -> None:
+    def set_age(self, days: int) -> None:
         self.set_grow(int(self.height * 0.25 * days / 7))
         self.age += days
 
-    def set_grow(self, centimeters) -> None:
+    def set_grow(self, centimeters: int) -> None:
         self.growth = centimeters
         self.height += centimeters
 

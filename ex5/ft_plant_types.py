@@ -50,7 +50,7 @@ class Plant:
         msg += "Security: Negative height rejected"
         return (msg)
 
-    def get_info(self):
+    def get_info(self) -> None:
         print(self.get_name(), ":  ", self.get_height(), sep="", end="")
         print(self.get_age(), " days old", sep="")
 
