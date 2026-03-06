@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from typing import Self
+from typing import Any
 
 
 class Garden:
@@ -231,7 +232,7 @@ class GardenManager:
         return (garden)
 
     @classmethod
-    def add_plant(cls, p: dict) -> Plant:
+    def add_plant(cls, p: dict[str, Any]) -> Plant:
         garden: Garden
         plant: Plant
         garden = cls.create_garden_network(p["gardener"])
@@ -260,7 +261,7 @@ class GardenManager:
         return (plant)
 
     @classmethod
-    def grow_plant(cls, grow: dict) -> Plant:
+    def grow_plant(cls, grow: dict[str, Any]) -> Plant:
         garden: Garden
         garden = cls.create_garden_network(grow["gardener"])
         plant = next((p for p in garden.plants

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from typing import Self
+from typing import Any
 
 
 class Plant:
@@ -121,7 +122,7 @@ class Vegetable(Plant):
         return (self)
 
 
-def ft_creat_plant(stream: list) -> Plant:
+def ft_creat_plant(stream: list[Any]) -> Plant:
     plant: Plant
     match stream[0]:
         case "flower":
@@ -144,7 +145,7 @@ def ft_plant_types() -> None:
                   ["tree", "Chestnut", 650, 3650, 64, 42],
                   ["vegetable", "Tomato", 80, 90, "summer", 15],
                   ["vegetable", "Chili pepper", 64, 42, "fall", 20]]
-    plants: list = []
+    plants: list[Plant] = []
     for stream in streamline:
         plants.append(ft_creat_plant(stream))
     print("=== Garden Plant Types ===")
@@ -152,18 +153,17 @@ def ft_plant_types() -> None:
     for p in plants:
         print(f"{p.get_name()} ({type(p).__name__}):", end=" ")
         print(f"{p.get_height()}cm, {p.get_age()} days,", end=" ")
-        match type(p).__name__:
-            case "Flower":
-                print(f"{p.get_color()} color")
-                print(f"{p.get_name()} is blooming beautifully!")
-            case "Tree":
-                print(f"{p.get_trunk()}cm diameter")
-                print(f"{p.get_name()} provides {p.get_shade()}", end=" ")
-                print(" square meters of shade")
-            case "Vegetable":
-                print(f"{p.get_harvest()} harvest")
-                print(f"{p.get_name()}", end=" ")
-                print(f"contains {p.get_nutrition()} Kcal per 100g")
+        if isinstance(p, Flower):
+            print(f"{p.get_color()} color")
+            print(f"{p.get_name()} is blooming beautifully!")
+        elif isinstance(p, Tree):
+            print(f"{p.get_trunk()}cm diameter")
+            print(f"{p.get_name()} provides {p.get_shade()}", end=" ")
+            print(" square meters of shade")
+        elif isinstance(p, Vegetable):
+            print(f"{p.get_harvest()} harvest")
+            print(f"{p.get_name()}", end=" ")
+            print(f"contains {p.get_nutrition()} Kcal per 100g")
         print("")
 
 
