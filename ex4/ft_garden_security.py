@@ -15,7 +15,7 @@ class Plant:
         self.set_height(height)
 
     def get_name(self) -> str:
-        return (self._name)
+        return (self.__name)
 
     def get_age(self) -> int:
         return (self._age)
@@ -24,7 +24,7 @@ class Plant:
         return (self._height)
 
     def set_name(self, name: str) -> Self:
-        self._name = name
+        self.__name = name
         return (self)
 
     def set_age(self, days: int) -> int:
@@ -52,7 +52,7 @@ class Plant:
         return (msg)
 
     def get_info(self) -> None:
-        print(self._name, ":  ", self._height, sep="", end="")
+        print(self.__name, ":  ", self._height, sep="", end="")
         print(self._age, " days old", sep="")
 
 
